@@ -31,6 +31,12 @@ optional arguments:
   -6, --six             Only select repeaters with 6 digit ID.
   -zc ZONE_CAPACITY, --zone-capacity ZONE_CAPACITY
                         Channel capacity within zone. 160 by default as for top models, use 16 for the lite and non-display ones.
+  -rl RAW_LINES [RAW_LINES ...], --raw-lines RAW_LINES [RAW_LINES ...]
+                        Add raw xml tag line for each channel configuration.
+                        example: -rl "<field name=\"CP_UKPPERS\"
+                        Name=\"RussianGlobal\">RussianGlobal</field>" "<field
+                        name=\"CP_TGLISTIT\" Name=\"DigitalRXGroupList/Избранн
+                        ые\">DigitalRXGroupList/Избранные</field>"                        
 ```
 
 ## Examples
@@ -58,6 +64,8 @@ In case your latitude and/or longitude have negative values, please refer them t
 or
 
 `./zone.py -n 'Minneapolis' -b uhf -t gps -lat 44.9570 -lon=-93.2780 -6`
+
+`./zone.py -n 'Moscow' -b uhf -t gps -lat 55.751378 -lon 37.617199 -6 -rl "<field name=\"CP_UKPPERS\" Name=\"RussianGlobal\">RussianGlobal</field>" "<field name=\"CP_TGLISTIT\" Name=\"DigitalRXGroupList/Избранные\">DigitalRXGroupList/Избранные</field>"`
 
 While creating zone file(s) the script will also output the list of found repeaters like this:
 

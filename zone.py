@@ -36,6 +36,10 @@ parser.add_argument('-6', '--six', action='store_true', help='Only select repeat
 parser.add_argument('-zc', '--zone-capacity', default=160, type=int,
                     help='Channel capacity within zone. 160 by default as for top models, use 16 for the lite and '
                          'non-display ones.')
+parser.add_argument('-rl', '--raw-lines', nargs='+',
+                    help='Add raw xml tag line for each channel configuration.\n'
+                    'example:\n'
+                    '-rl "<field name=\\\"CP_UKPPERS\\\" Name=\\\"RussianGlobal\\\">RussianGlobal</field>" "<field name=\\\"CP_TGLISTIT\\\" Name=\\\"DigitalRXGroupList/Избранные\\\">DigitalRXGroupList/Избранные</field>"')                         
 
 args = parser.parse_args()
 
@@ -53,6 +57,11 @@ if args.type == 'gps':
 if args.mcc and not str(args.mcc).isdigit():
     args.mcc = mobile_codes.alpha2(args.mcc)[4]
 
+if not args.raw_lines == None:
+  raw_lines = "\n  ".join(args.raw_lines)
+  print("raw lines:", raw_lines)
+else:
+  raw_lines = ""
 
 def download_file():
     if not exists(bm_file) or args.force:
@@ -206,6 +215,7 @@ def format_channel(item):
   <field name="CP_MYCALLADCRTR" Name="Follow Admit Criteria">FOLLOW_ADMIT_CRITERIA</field>
   <field name="CP_TEXTMESSAGETYPE" Name="Advantage">TMS</field>
   <field name="CP_TRANSMITINTERRUPTTYPE" Name="Advantage">PROPRIETARY</field>
+  {raw_lines}
 </set>
     '''
 
@@ -227,6 +237,7 @@ def format_channel(item):
   <field name="CP_MYCALLADCRTR" Name="Follow Admit Criteria">FOLLOW_ADMIT_CRITERIA</field>
   <field name="CP_TEXTMESSAGETYPE" Name="Advantage">TMS</field>
   <field name="CP_TRANSMITINTERRUPTTYPE" Name="Advantage">PROPRIETARY</field>
+  {raw_lines}
 </set>
 <set name="ConventionalPersonality" alias="{ch_alias} TS2" key="DGTLCONV6PT25">
   <field name="CP_PERSTYPE" Name="Digital">DGTLCONV6PT25</field>
@@ -245,6 +256,7 @@ def format_channel(item):
   <field name="CP_MYCALLADCRTR" Name="Follow Admit Criteria">FOLLOW_ADMIT_CRITERIA</field>
   <field name="CP_TEXTMESSAGETYPE" Name="Advantage">TMS</field>
   <field name="CP_TRANSMITINTERRUPTTYPE" Name="Advantage">PROPRIETARY</field>
+  {raw_lines}
 </set>
     '''
 
